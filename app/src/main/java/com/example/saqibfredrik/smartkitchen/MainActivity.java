@@ -1,34 +1,43 @@
 package com.example.saqibfredrik.smartkitchen;
 
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtView;
-    Button btn;
+    protected Paint mPaint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        btn     = (Button) findViewById(R.id.btn1);
-        txtView = (TextView) findViewById(R.id.textView);
-    }
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
+        mPaint.setDither(true);
+        mPaint.setColor(Color.GREEN);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setStrokeJoin(Paint.Join.ROUND);
+        mPaint.setStrokeCap(Paint.Cap.ROUND);
+        mPaint.setStrokeWidth(12);
+        DrawingView dv = new DrawingView(this, mPaint);
+        setContentView(dv);
+    }//End of onCreate
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
+    }//End of onCreateOptionsMenu
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -41,23 +50,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
+    }//End of onOptionItemSelected
 
-    public void onClick (View v)
-    {
-        switch (v.getId())
-        {
-            case R.id.btn1:
-                if(txtView.getVisibility() == View.INVISIBLE)
-                {
-                    txtView.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    txtView.setVisibility(View.INVISIBLE);
-                }
-        }
-    }
-}
+}//End of MainActivity
