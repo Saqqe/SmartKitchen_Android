@@ -1,35 +1,29 @@
 package com.example.saqibfredrik.smartkitchen;
 
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected Paint mPaint;
+    protected Button btn_crop, btn_save;
+    protected TextView txt;
+
+    private DrawingView dv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        mPaint = new Paint();
-        mPaint.setAntiAlias(true);
-        mPaint.setDither(true);
-        mPaint.setColor(Color.GREEN);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setStrokeJoin(Paint.Join.ROUND);
-        mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(12);
-        DrawingView dv = new DrawingView(this, mPaint);
-        setContentView(dv);
+        btn_crop = (Button) findViewById(R.id.btn_crop);
+        btn_save = (Button) findViewById(R.id.btn_save);
+        txt      = (TextView) findViewById(R.id.textView);
+
     }//End of onCreate
 
     @Override
@@ -53,4 +47,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }//End of onOptionItemSelected
 
+
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.btn_crop:
+
+                /**
+                 * Call DrawingView for cropping the image
+                 */
+                break;
+            case R.id.btn_save:
+
+                /**
+                 * Save the image and sen it to RPi for training !!
+                 */
+            default:
+                break;
+        }
+    }
 }//End of MainActivity
