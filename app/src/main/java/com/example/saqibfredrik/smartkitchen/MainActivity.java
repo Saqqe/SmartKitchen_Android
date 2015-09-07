@@ -21,8 +21,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 
@@ -83,28 +85,14 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId())
         {
             case R.id.crop_button:
+                //Crop the cropped image for show
                 croppedImageView.setImageBitmap(cropImageView.getCroppedBitmap());
                 break;
             case R.id.saveButton:
-                /*View view = (LayoutInflater.from(MainActivity.this)).inflate(R.layout.dialog_save, null);
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
-                alertBuilder.setView(view);
-
-                final EditText userInput = (EditText) view.findViewById(R.id.userInput);
-
-                alertBuilder.setCancelable(true).setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ParseObject imageObject = new ParseObject("CroppedImage");
-                        String picName = userInput.getText().toString();
-                        imageObject.put(picName, cropImageView.getCroppedBitmap());
-                        imageObject.saveInBackground();
-                        makeToast("Saved iamge with name: " + picName);
-                    }
-                });
-                Dialog dialog = alertBuilder.create();
-                dialog.show();*/
-                if(cropImageView.getCroppedBitmap() != null) {
+                /**
+                 * Check if there is a cropped image
+                 */
+                if(croppedImageView.getDrawable() != null) {
                     View view = (LayoutInflater.from(MainActivity.this)).inflate(R.layout.dialog_save, null);
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
                     alertBuilder.setView(view);
@@ -119,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-                                Bitmap bitmap = ((BitmapDrawable)croppedImageView.getDrawable()).getBitmap();
+                                final Bitmap bitmap = ((BitmapDrawable) croppedImageView.getDrawable()).getBitmap();
                                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
                                 String picName = userInput.getText().toString();
@@ -130,18 +118,43 @@ public class MainActivity extends AppCompatActivity {
 
                                 parseFile.save();
                                 parseObject.put("FileName", parseFile);
-                                parseObject.saveInBackground();
-                                makeToast("Saved!");
 
-                            } catch (android.net.ParseException ignored) {
-
-                            } catch (com.parse.ParseException e) {
+                                if (!progress.isShowing()) {
+                                    progress.setTitle("Loading");
+                                    progress.setMessage("Wait while loading...");
+                                    progress.show();
+                                }
+                                parseObject.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if(e == null){
+                                            if(progress.isShowing()){
+                                                progress.dismiss();
+                                            }
+                                            String picName = userInput.getText().toString();
+                                            picName = picName.trim();
+                                            makeToast("Image named: "+picName+", is now saved!");
+                                        }
+                                        else{
+                                            if(progress.isShowing()){
+                                                progress.dismiss();
+                                            }
+                                            makeToast("Something went wrong, image was NOT saved!");
+                                        }
+                                    }
+                                });
+                            }
+                            catch (com.parse.ParseException e) {
                                 e.printStackTrace();
+                                makeToast("Something went wrong with uploading the image, try again please");
                             }
                         }
                     });
                     Dialog dialog = alertBuilder.create();
                     dialog.show();
+                }
+                else {
+                    makeToast("Crop the image CLOSE to the object please!");
                 }
                 break;
             default:
