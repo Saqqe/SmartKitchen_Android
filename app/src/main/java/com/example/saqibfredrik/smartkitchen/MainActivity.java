@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 //Crop the cropped image for show
                 croppedImageView.setImageBitmap(cropImageView.getCroppedBitmap());
                 break;
+            //End of cropButton case
             case R.id.saveButton:
                 /**
                  * Check if there is a cropped image
@@ -157,10 +158,11 @@ public class MainActivity extends AppCompatActivity {
                     makeToast("Crop the image CLOSE to the object please!");
                 }
                 break;
+            //End of SaveButton case
             default:
                 break;
         }
-    }
+    }//End of onClick
 
     public void imageLoad(String imageUri){
         // Load image, decode it to Bitmap and return Bitmap to callback
