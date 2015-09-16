@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     protected ProgressDialog progress;
 
     protected String picURL = "";
+    public String URLTAG = "url";
+
+    private final String TAG = "MainActivity";
 
 
     @Override
@@ -43,15 +46,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         init();
 
+        //Log.d(TAG, "Inside onCreate");
+
+        picURL           = getIntent().getStringExtra(URLTAG);
         cropImageView    = (CropImageView) findViewById(R.id.cropImageView);
         croppedImageView = (ImageView) findViewById(R.id.croppedImageView);
         progress         = new ProgressDialog(this);
 
-        picURL = "https://scontent-ams3-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/10382163_465971536889458_6913905472985494652_n.jpg?oh=44daa29efcc9ecbf20661103518a5385&oe=566F0F1C";
+        //picURL = "https://scontent-ams3-1.xx.fbcdn.net/hphotos-xtf1/v/t1.0-9/10382163_465971536889458_6913905472985494652_n.jpg?oh=44daa29efcc9ecbf20661103518a5385&oe=566F0F1C";
 
         imageLoad(picURL);
 
     }//End of onCreate
+
 
     public void init(){
         //UniversalImageLoader initiation
@@ -85,8 +92,13 @@ public class MainActivity extends AppCompatActivity {
         switch (v.getId())
         {
             case R.id.crop_button:
-                //Crop the cropped image for show
-                croppedImageView.setImageBitmap(cropImageView.getCroppedBitmap());
+                if(cropImageView.getImageBitmap() != null) {
+                    //Crop the original image and show the cropped
+                    croppedImageView.setImageBitmap(cropImageView.getCroppedBitmap());
+                }
+                else{
+                    makeToast("No image to crop");
+                }
                 break;
             //End of cropButton case
             case R.id.saveButton:
