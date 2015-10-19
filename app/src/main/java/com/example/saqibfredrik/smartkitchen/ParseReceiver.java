@@ -18,7 +18,7 @@ import org.json.JSONObject;
  */
 public class ParseReceiver extends BroadcastReceiver {
 
-    private final String TAG = "Parse Notification";
+    private final String TAG = ParseReceiver.class.getName();
     private String alert = "";
     public String URLTAG = "url";
 
@@ -54,7 +54,7 @@ public class ParseReceiver extends BroadcastReceiver {
         mBuilder.setAutoCancel(true);
 
         // this is the activity that we will send the user
-        resultIntent = new Intent(context, MainActivity.class);
+        resultIntent = new Intent(context, ImageHandler.class);
 
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

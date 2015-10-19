@@ -19,6 +19,8 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
  */
 public class ImageHandler extends AppCompatActivity {
 
+    private static final String TAG = ImageHandler.class.getName();
+
     private String picURL = "";
     protected ImageView croppedImgView;
     protected CropImageView cropImgView;
@@ -39,6 +41,8 @@ public class ImageHandler extends AppCompatActivity {
 
         picURL = "http://i.imgur.com/d5F1k0g.jpg";
 
+        
+
         imageLoad(picURL);
     }
 
@@ -51,6 +55,10 @@ public class ImageHandler extends AppCompatActivity {
         ImageLoader.getInstance().init(config);
     }
 
+    /**
+     * imageLoader
+     * @param imageUri
+     */
     public void imageLoad(String imageUri){
         // Load image, decode it to Bitmap and return Bitmap to callback
         ImageLoader imageLoader = ImageLoader.getInstance();
@@ -78,6 +86,9 @@ public class ImageHandler extends AppCompatActivity {
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
                 super.onLoadingFailed(imageUri, view, failReason);
                 makeToast("Something went wrong downloading from: " + imageUri);
+                if (progress.isShowing()) {
+                    progress.dismiss();
+                }
             }
         });
     }//End of imageLoad

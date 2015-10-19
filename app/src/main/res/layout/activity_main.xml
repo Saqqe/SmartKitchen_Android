@@ -11,8 +11,9 @@
         android:text="Unknown Image"
         android:onClick="onClick"
         android:textColor="@android:color/white"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/btn_showInventory"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
 
     <com.dd.morphingbutton.MorphingButton
         android:layout_width="wrap_content"
@@ -20,6 +21,8 @@
         android:text="Inventory"
         android:id="@+id/btn_showInventory"
         android:textColor="@android:color/white"
-        android:onClick="onClick"/>
+        android:onClick="onClick"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
