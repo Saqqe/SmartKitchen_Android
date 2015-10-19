@@ -13,14 +13,14 @@ import com.dd.morphingbutton.MorphingButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MorphingButton btnUnknown;
+    private MorphingButton btnShowUnknown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnUnknown = (MorphingButton) findViewById(R.id.btn_unknown);
+        btnShowUnknown = (MorphingButton) findViewById(R.id.btn_showUnknown);
     }
 
 
@@ -47,19 +47,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * onClick event handler
+     *
+     * @param view
+     */
     public void onClick(View view) {
         switch (view.getId())
         {
-            case R.id.btn_unknown:
+            case R.id.btn_showUnknown:
                 Intent myIntent = new Intent(MainActivity.this, ImageHandler.class);
                 MainActivity.this.startActivity(myIntent);
+                break;
+            case R.id.btn_showInventory:
+                Intent inventoryIntent = new Intent(MainActivity.this, InventoryStatus.class);
+                MainActivity.this.startActivity(inventoryIntent);
                 break;
             default:
                 break;
 
         }
-    }
+    }//End of onclick
 
     public void makeToast(String msg){
         Toast toast = Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_SHORT);
