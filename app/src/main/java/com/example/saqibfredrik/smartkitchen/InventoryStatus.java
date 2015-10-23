@@ -72,7 +72,7 @@ public class InventoryStatus extends AppCompatActivity{
             progress.show();
         }
 
-        query.getInBackground(getString(R.string.ParseObjectID), new GetCallback<ParseObject>() {
+        query.getInBackground(getString(R.string.ParseObjectID_InventoryStatus), new GetCallback<ParseObject>() {
 
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {
@@ -83,7 +83,6 @@ public class InventoryStatus extends AppCompatActivity{
                         stringArrayList.add(s + ": " + object.getInt(s));
                     }
                     updateListView(stringArrayList);
-
                 } else {
                     // something went wrong
                     Log.d(TAG, "Something went Wrong");

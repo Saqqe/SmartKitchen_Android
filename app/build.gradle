@@ -25,4 +25,5 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.github.dmytrodanylyk:android-morphing-button:98a4986e56'
+    compile 'com.commit451:PhotoView:1.2.4' // https://github.com/chrisbanes/PhotoView
 }

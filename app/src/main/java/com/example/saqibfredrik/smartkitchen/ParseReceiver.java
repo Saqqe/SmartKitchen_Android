@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,10 +34,13 @@ public class ParseReceiver extends BroadcastReceiver {
         //Get JSON data and put them into variables
         try {
             JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            //JSONArray jsonArray = json.getJSONArray("");
+
+
 
             alert = json.getString("url");
 
-            Log.d(TAG, "Got it!:"+ alert);
+            Log.d(TAG, "Got it!:"+ alert + "\nThis is whole json: " + json);
 
         } catch (JSONException e) {
 
