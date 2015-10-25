@@ -2,14 +2,10 @@ package com.example.saqibfredrik.smartkitchen;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,28 +21,19 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.parse.GetCallback;
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Saqib Sarker on 2015-10-16.
  */
-public class ImageHandler extends AppCompatActivity {
+public class ImageHandler extends AppCompatActivity implements Observer{
 
     private static final String PIC_NAME        = "picName";
     private static final String PIC_URL         = "picURL";
@@ -84,15 +71,19 @@ public class ImageHandler extends AppCompatActivity {
         textToShow              = (TextView) findViewById(R.id.textView_UnderPhoto);
 
         jsonHandler = new JsonHandler();
+        jsonHandler.addObserver(this);
+
         jsonObject  = new JSONObject();
 
-        getAndSetImage();
+        //getAndSetImage();
 
     }//End of onCreate
 
     private void getAndSetImage(){
+        Log.d(TAG, "Outside try");
         try {
             jsonObject = jsonHandler.getJsonObject();
+            Log.d(TAG, "Inside try, outside IF");
             if(jsonObject != null) {
                 Log.d(TAG, jsonObject.toString());
                 imageLoad(jsonObject.getString(PIC_URL));
@@ -120,6 +111,11 @@ public class ImageHandler extends AppCompatActivity {
                 getAndSetImage();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        getAndSetImage();
     }
 
     /**
@@ -268,4 +264,6 @@ public class ImageHandler extends AppCompatActivity {
         Toast toast = Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_SHORT);
         toast.show();
     }//End of makeToast
+
+
 }

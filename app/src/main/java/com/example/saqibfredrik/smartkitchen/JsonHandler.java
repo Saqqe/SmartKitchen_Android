@@ -14,10 +14,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Observable;
+
 /**
  * Created by Saqib Sarker on 2015-10-23.
  */
-public class JsonHandler {
+public class JsonHandler extends Observable{
 
     private static final String TAG = JsonHandler.class.getName();
 
@@ -39,43 +41,6 @@ public class JsonHandler {
         init();
 
     }//End of constructor
-
-    /**
-     * download data from parse.com
-     */
-    private void init(){
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("UnknownImage");
-        query.getInBackground("QjestMNLzB", new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    ParseFile file = (ParseFile) object.get("json");
-                    file.getDataInBackground(new GetDataCallback() {
-                        @Override
-                        public void done(byte[] bytes, ParseException e) {
-                            if (e == null) {
-                                //Done
-                                try {
-                                    String str = new String(bytes);
-                                    jsonArrayFromParse  = new JSONArray(str);
-                                    jsonArrayLen        = jsonArrayFromParse.length();
-
-
-                                } catch (JSONException e1) {
-                                    e1.printStackTrace();
-                                }
-                            } else {
-                                //Went Wrong
-                                Log.d(TAG, "Went wrong in file.getDataInBackground");
-                            }
-                        }
-                    });
-                } else {
-                    // something went wrong
-                    Log.d(TAG, "Went wrong in querry.getInBackground");
-                }
-            }
-        });
-    }//End of getJson
 
     /**
      *
@@ -103,6 +68,47 @@ public class JsonHandler {
             uploadAndUpdateParse();
         }
     }//End of putJsonObject
+
+
+    /**----------------PRIVATE----------------**/
+
+    /**
+     * download data from parse.com
+     */
+    private void init(){
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("UnknownImage");
+        query.getInBackground("QjestMNLzB", new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    ParseFile file = (ParseFile) object.get("json");
+                    file.getDataInBackground(new GetDataCallback() {
+                        @Override
+                        public void done(byte[] bytes, ParseException e) {
+                            if (e == null) {
+                                //Done
+                                try {
+                                    String str = new String(bytes);
+                                    jsonArrayFromParse  = new JSONArray(str);
+                                    jsonArrayLen        = jsonArrayFromParse.length();
+                                    setChanged();
+                                    notifyObservers();
+
+                                } catch (JSONException e1) {
+                                    e1.printStackTrace();
+                                }
+                            } else {
+                                //Went Wrong
+                                Log.d(TAG, "Went wrong in file.getDataInBackground");
+                            }
+                        }
+                    });
+                } else {
+                    // something went wrong
+                    Log.d(TAG, "Went wrong in querry.getInBackground");
+                }
+            }
+        });
+    }//End of getJson
 
     /**
      * update pic information
