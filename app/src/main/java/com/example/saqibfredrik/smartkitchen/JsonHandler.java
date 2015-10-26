@@ -113,7 +113,7 @@ public class JsonHandler extends Observable{
     /**
      * update pic information
      */
-    private void uploadAndUpdateParse(){
+    public void uploadAndUpdateParse(){
         if( this.jsonArrayToSave.length() >  0 ) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery("ConfirmedImages");
             // Retrieve the object by id

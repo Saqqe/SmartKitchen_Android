@@ -8,4 +8,5 @@
     <string name="ParseObjectID_InventoryStatus">Qvd9aQNSO0</string>
     <string name="ParseObjectID_UnknownImageJSONArray">QjestMNLzB</string>
     <string name="ParseObjectID_ConfirmedImages">uXFlSqSVMu</string>
+    <string name="refresh">Refresh</string>
 </resources>

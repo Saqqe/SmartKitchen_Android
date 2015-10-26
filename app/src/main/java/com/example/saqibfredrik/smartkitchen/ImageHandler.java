@@ -70,6 +70,7 @@ public class ImageHandler extends AppCompatActivity implements Observer{
         cropImgViewAttacher     = new PhotoViewAttacher(cropImgView);
         textToShow              = (TextView) findViewById(R.id.textView_UnderPhoto);
 
+
         jsonHandler = new JsonHandler();
         jsonHandler.addObserver(this);
 
@@ -204,7 +205,19 @@ public class ImageHandler extends AppCompatActivity implements Observer{
             case R.id.btn_saveButton:
                 //Check the bottom ImageView if there is a image!
                 if(croppedImgView.getDrawable() != null){
-                    showInputDialog();
+                    try {
+                        //Log.d(TAG, "onClick, btn_save\n" + "FirstX: " + cropImgView.getFirstX() + " FirstY: " + cropImgView.getFirstY() +
+                            // " Width: " + cropImgView.getCroppedWidth() + " Height: " + cropImgView.getCroppedHeight());
+
+                        jsonObject.put("x", cropImgView.getFirstX());
+                        jsonObject.put("y", cropImgView.getFirstY());
+                        jsonObject.put("width", cropImgView.getCroppedWidth());
+                        jsonObject.put("height", cropImgView.getCroppedHeight());
+
+                        showInputDialog();
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 else{
                     makeToast("You need to crop the image first!");
@@ -231,21 +244,19 @@ public class ImageHandler extends AppCompatActivity implements Observer{
         alertDialogBuilder.setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        /**
-                         * TODO set information on right JSONObject!
-                         */
-                        try {
-                            jsonObject.put(ITEM_NAME, editText.getText().toString().trim());
-                            jsonObject.put("x", cropImgView.getFirstX());
-                            jsonObject.put("y", cropImgView.getFirstY());
-                            jsonObject.put("width", cropImgView.getCroppedWidth());
-                            jsonObject.put("height", cropImgView.getCroppedHeight());
+                        if (!editText.getText().toString().trim().equals("")) {
+                            try {
+                                jsonObject.put(ITEM_NAME, editText.getText().toString().trim());
 
-                            jsonHandler.putJsonObject(jsonObject);
+                                jsonHandler.putJsonObject(jsonObject);
+                                jsonHandler.uploadAndUpdateParse();
 
-                            getAndSetImage();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                                //getAndSetImage();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            makeToast("ERROR!\nYou need to name the object!");
                         }
                     }
                 })
@@ -258,7 +269,7 @@ public class ImageHandler extends AppCompatActivity implements Observer{
         // create an alert dialog
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
-    }//End of showInputDialog()
+    }//End of showInputDialog
 
     public void makeToast(String msg){
         Toast toast = Toast.makeText(this.getApplicationContext(), msg, Toast.LENGTH_SHORT);
