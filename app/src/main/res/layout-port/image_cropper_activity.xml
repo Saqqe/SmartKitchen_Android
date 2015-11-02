@@ -13,6 +13,7 @@
         android:layout_height="250dp"
         android:padding="16dp"
         custom:cropMode="ratio_free"
+        custom:handleSize="10dp"
         custom:initialFrameScale="0.5" />
 
     <RelativeLayout
@@ -37,12 +38,21 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text=""
+            android:id="@+id/textView_UnderPhoto"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/croppedImageView"
         android:layout_margin="16dp"
         android:layout_gravity="center"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

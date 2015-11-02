@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ import org.json.JSONObject;
  */
 public class ParseReceiver extends BroadcastReceiver {
 
-    private final String TAG = "Parse Notification";
+    private final String TAG = ParseReceiver.class.getName();
     private String alert = "";
     public String URLTAG = "url";
 
@@ -33,10 +34,13 @@ public class ParseReceiver extends BroadcastReceiver {
         //Get JSON data and put them into variables
         try {
             JSONObject json = new JSONObject(intent.getExtras().getString("com.parse.Data"));
+            //JSONArray jsonArray = json.getJSONArray("");
+
+
 
             alert = json.getString("url");
 
-            Log.d(TAG, "Got it!:"+ alert);
+            Log.d(TAG, "Got it!:"+ alert + "\nThis is whole json: " + json);
 
         } catch (JSONException e) {
 
@@ -54,7 +58,7 @@ public class ParseReceiver extends BroadcastReceiver {
         mBuilder.setAutoCancel(true);
 
         // this is the activity that we will send the user
-        resultIntent = new Intent(context, MainActivity.class);
+        resultIntent = new Intent(context, ImageHandler.class);
 
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
