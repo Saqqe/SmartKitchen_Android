@@ -47,13 +47,14 @@ public class JsonHandler extends Observable{
      * @return JSONObject
      */
     public JSONObject getJsonObject(){
-        if( index < jsonArrayLen ) {
+        if( !this.jsonArrayFromParse.isNull(index) ) {
             try {
-                return this.jsonArrayFromParse.getJSONObject(index++);
+                return this.jsonArrayFromParse.getJSONObject(index);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        updateDeleteJsonObj();
         return null;
     }//End of getJsonObject
 
@@ -63,11 +64,41 @@ public class JsonHandler extends Observable{
      */
     public void putJsonObject(JSONObject jObj){
         this.jsonArrayToSave.put(jObj);
+        this.jsonArrayFromParse.remove(index);
 
         if( index == (jsonArrayLen - 1) ){
             uploadAndUpdateParse();
         }
     }//End of putJsonObject
+
+    /**
+     * update pic information
+     */
+    public void uploadAndUpdateParse(){
+        if( this.jsonArrayToSave.length() >  0 ) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("ConfirmedImages");
+            // Retrieve the object by id
+            query.getInBackground("uXFlSqSVMu", new GetCallback<ParseObject>() {
+                public void done(final ParseObject object, ParseException e) {
+                    if (e == null) {
+                        // Now let's update it with some new data.
+                        byte[] data = jsonArrayToSave.toString().getBytes(); // hardCoded what to save!
+                        final ParseFile file = new ParseFile("ConfirmedImages.json", data);
+                        file.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    //Done
+                                    object.put("json", file);
+                                    object.saveInBackground();
+                                }
+                            }//End of callback file save
+                        });//End of file save
+                    }
+                }//End of callback query
+            });//End of query
+        }//End of if( this.jsonArrayToSAve.length() >  0 )
+    }//End of updateParseIWthNewInfo
 
 
     /**----------------PRIVATE----------------**/
@@ -110,34 +141,27 @@ public class JsonHandler extends Observable{
         });
     }//End of getJson
 
-    /**
-     * update pic information
-     */
-    public void uploadAndUpdateParse(){
-        if( this.jsonArrayToSave.length() >  0 ) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("ConfirmedImages");
-            // Retrieve the object by id
-            query.getInBackground("uXFlSqSVMu", new GetCallback<ParseObject>() {
-                public void done(final ParseObject object, ParseException e) {
-                    if (e == null) {
-                        // Now let's update it with some new data.
-                        byte[] data = jsonArrayToSave.toString().getBytes(); // hardCoded what to save!
-                        final ParseFile file = new ParseFile("ConfirmedImages.json", data);
-                        file.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e == null) {
-                                    //Done
-                                    object.put("json", file);
-                                    object.saveInBackground();
-                                }
-                            }//End of callback file save
-                        });//End of file save
-                    }
-                }//End of callback query
-            });//End of query
-        }//End of if( this.jsonArrayToSAve.length() >  0 )
-    }//End of updateParseIWthNewInfo
-
-
+    public void updateDeleteJsonObj(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UnknownImage");
+        // Retrieve the object by id
+        query.getInBackground("QjestMNLzB", new GetCallback<ParseObject>() {
+            public void done(final ParseObject object, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data.
+                    byte[] data = jsonArrayFromParse.toString().getBytes(); // hardCoded what to save!
+                    final ParseFile file = new ParseFile("ImagesURLS.json", data);
+                    file.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                //Done
+                                object.put("json", file);
+                                object.saveInBackground();
+                            }
+                        }//End of callback file save
+                    });//End of file save
+                }
+            }//End of callback query
+        });//End of query
+    }//End of updateDeleteJsonObj
 }

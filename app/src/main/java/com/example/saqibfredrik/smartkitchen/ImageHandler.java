@@ -90,6 +90,9 @@ public class ImageHandler extends AppCompatActivity implements Observer{
                 textToShow.setText(jsonObject.getString(PIC_NAME));
                 imageLoad(jsonObject.getString(PIC_URL));
             }
+            else{
+                textToShow.setText("No new images!");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -113,6 +116,12 @@ public class ImageHandler extends AppCompatActivity implements Observer{
                 getAndSetImage();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        jsonHandler.updateDeleteJsonObj();
+        super.onPause();
     }
 
     @Override
