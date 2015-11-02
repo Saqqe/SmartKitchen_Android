@@ -87,6 +87,7 @@ public class ImageHandler extends AppCompatActivity implements Observer{
             Log.d(TAG, "Inside try, outside IF");
             if(jsonObject != null) {
                 Log.d(TAG, jsonObject.toString());
+                textToShow.setText(jsonObject.getString(PIC_NAME));
                 imageLoad(jsonObject.getString(PIC_URL));
             }
         } catch (JSONException e) {
@@ -251,7 +252,7 @@ public class ImageHandler extends AppCompatActivity implements Observer{
                                 jsonHandler.putJsonObject(jsonObject);
                                 jsonHandler.uploadAndUpdateParse();
 
-                                //getAndSetImage();
+                                getAndSetImage();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
