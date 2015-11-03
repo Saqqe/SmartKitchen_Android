@@ -70,13 +70,10 @@ public class ImageHandler extends AppCompatActivity implements Observer{
         cropImgViewAttacher     = new PhotoViewAttacher(cropImgView);
         textToShow              = (TextView) findViewById(R.id.textView_UnderPhoto);
 
-
         jsonHandler = new JsonHandler();
         jsonHandler.addObserver(this);
 
         jsonObject  = new JSONObject();
-
-        //getAndSetImage();
 
     }//End of onCreate
 
@@ -91,6 +88,7 @@ public class ImageHandler extends AppCompatActivity implements Observer{
                 imageLoad(jsonObject.getString(PIC_URL));
             }
             else{
+                cropImgView.setImageBitmap(null);
                 textToShow.setText("No new images!");
             }
         } catch (JSONException e) {
@@ -110,18 +108,16 @@ public class ImageHandler extends AppCompatActivity implements Observer{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_refresh:
-                /**
-                 * @TODO Check for images from server
-                 */
                 getAndSetImage();
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onPause() {
+    protected void onStop() {
         jsonHandler.updateDeleteJsonObj();
-        super.onPause();
+        jsonHandler.setFlagToTrue();
+        super.onStop();
     }
 
     @Override

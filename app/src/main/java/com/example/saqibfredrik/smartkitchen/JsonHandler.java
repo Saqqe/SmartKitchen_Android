@@ -100,6 +100,45 @@ public class JsonHandler extends Observable{
         }//End of if( this.jsonArrayToSAve.length() >  0 )
     }//End of updateParseIWthNewInfo
 
+    public void updateDeleteJsonObj(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("UnknownImage");
+        // Retrieve the object by id
+        query.getInBackground("QjestMNLzB", new GetCallback<ParseObject>() {
+            public void done(final ParseObject object, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data.
+                    byte[] data = jsonArrayFromParse.toString().getBytes(); // hardCoded what to save!
+                    final ParseFile file = new ParseFile("ImagesURLS.json", data);
+                    file.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                //Done
+                                object.put("json", file);
+                                object.saveInBackground();
+                            }
+                        }//End of callback file save
+                    });//End of file save
+                }
+            }//End of callback query
+        });//End of query
+    }//End of updateDeleteJsonObj
+
+    public void setFlagToTrue(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("ConfirmedImages");
+
+        // Retrieve the object by id
+        query.getInBackground("uXFlSqSVMu", new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    // Now let's update it with some new data.
+                    object.put("isReady", true);
+                    object.saveInBackground();
+                }
+            }
+        });
+    }//End of setFlagToTrue
+
 
     /**----------------PRIVATE----------------**/
 
@@ -141,27 +180,4 @@ public class JsonHandler extends Observable{
         });
     }//End of getJson
 
-    public void updateDeleteJsonObj(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("UnknownImage");
-        // Retrieve the object by id
-        query.getInBackground("QjestMNLzB", new GetCallback<ParseObject>() {
-            public void done(final ParseObject object, ParseException e) {
-                if (e == null) {
-                    // Now let's update it with some new data.
-                    byte[] data = jsonArrayFromParse.toString().getBytes(); // hardCoded what to save!
-                    final ParseFile file = new ParseFile("ImagesURLS.json", data);
-                    file.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e == null) {
-                                //Done
-                                object.put("json", file);
-                                object.saveInBackground();
-                            }
-                        }//End of callback file save
-                    });//End of file save
-                }
-            }//End of callback query
-        });//End of query
-    }//End of updateDeleteJsonObj
 }
