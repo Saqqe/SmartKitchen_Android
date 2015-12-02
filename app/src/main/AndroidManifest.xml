@@ -35,15 +35,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!--  ImageHandler -->
         <activity
             android:name=".ImageHandler"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:label="Unknown image"/>
 
         <!--  InventoryStatus -->
         <activity
             android:name=".InventoryStatus"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:label="Inventory"/>
 
         <!-- Need for Parse.com notifications -->
         <service android:name="com.parse.PushService" />

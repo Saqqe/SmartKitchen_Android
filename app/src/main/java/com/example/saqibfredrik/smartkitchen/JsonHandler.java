@@ -119,7 +119,7 @@ public class JsonHandler extends Observable{
                             }
                         }//End of callback file save
                     });//End of file save
-                }
+                }//End of if( e == null )
             }//End of callback query
         });//End of query
     }//End of updateDeleteJsonObj

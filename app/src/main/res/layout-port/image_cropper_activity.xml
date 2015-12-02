@@ -38,15 +38,23 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No object"
+            android:id="@+id/btn_noObj"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:onClick="onClick"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text=""
             android:id="@+id/textView_UnderPhoto"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/btn_noObj"
             android:layout_centerHorizontal="true" />
-
     </RelativeLayout>
 
     <ImageView

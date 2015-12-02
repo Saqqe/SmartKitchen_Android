@@ -84,12 +84,12 @@ public class ImageHandler extends AppCompatActivity implements Observer{
             Log.d(TAG, "Inside try, outside IF");
             if(jsonObject != null) {
                 Log.d(TAG, jsonObject.toString());
-                textToShow.setText(jsonObject.getString(PIC_NAME));
+                textToShow.setText("Image name: " + jsonObject.getString(PIC_NAME));
                 imageLoad(jsonObject.getString(PIC_URL));
             }
             else{
                 cropImgView.setImageBitmap(null);
-                textToShow.setText("No new images!");
+                textToShow.setText("No new image!");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -201,8 +201,8 @@ public class ImageHandler extends AppCompatActivity implements Observer{
                     croppedImgView.setImageBitmap(cropImgView.getCroppedBitmap());
                     croppedImgViewAttacher.update();
 
-                    Log.d(TAG, "FirstX: " + cropImgView.getFirstX() + " FirstY: " + cropImgView.getFirstY() +
-                            " Width: " + cropImgView.getCroppedWidth() + " Height: " + cropImgView.getCroppedHeight());
+                    //Log.d(TAG, "FirstX: " + cropImgView.getFirstX() + " FirstY: " + cropImgView.getFirstY() +
+                    //      " Width: " + cropImgView.getCroppedWidth() + " Height: " + cropImgView.getCroppedHeight());
                 }
                 else{
                     makeToast("There is no image to crop!");
@@ -213,7 +213,7 @@ public class ImageHandler extends AppCompatActivity implements Observer{
                 if(croppedImgView.getDrawable() != null){
                     try {
                         //Log.d(TAG, "onClick, btn_save\n" + "FirstX: " + cropImgView.getFirstX() + " FirstY: " + cropImgView.getFirstY() +
-                            // " Width: " + cropImgView.getCroppedWidth() + " Height: " + cropImgView.getCroppedHeight());
+                        // " Width: " + cropImgView.getCroppedWidth() + " Height: " + cropImgView.getCroppedHeight());
 
                         jsonObject.put("x", cropImgView.getFirstX());
                         jsonObject.put("y", cropImgView.getFirstY());
@@ -228,8 +228,11 @@ public class ImageHandler extends AppCompatActivity implements Observer{
                 else{
                     makeToast("You need to crop the image first!");
                 }
-
                 break;
+            case R.id.btn_noObj:
+                //TODO: Delete image information due to no object in this image!
+                jsonHandler.updateDeleteJsonObj();
+                getAndSetImage();
             default:
                 break;
         }//End of switch
@@ -282,5 +285,4 @@ public class ImageHandler extends AppCompatActivity implements Observer{
         toast.show();
     }//End of makeToast
 
-
-}
+}//End of class
